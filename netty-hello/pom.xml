@@ -30,6 +30,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -39,7 +44,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
-                    <mainClass>com.zab.netty.hello.HelloApplication</mainClass>
+                    <mainClass>com.zab.netty.hello.HelloServer</mainClass>
                     <fork>true</fork>
                 </configuration>
                 <executions>

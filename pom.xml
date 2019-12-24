@@ -41,6 +41,7 @@
         <jackson-databind>2.9.8</jackson-databind>
         <session-redis>2.1.5.RELEASE</session-redis>
         <hystrix>1.2.7.RELEASE</hystrix>
+        <netty>4.1.25.Final</netty>
     </properties>
 
     <modules>
@@ -220,6 +221,12 @@
                         <artifactId>junit-vintage-engine</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
