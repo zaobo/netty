@@ -3,7 +3,13 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/netty-hello" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-hello/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-hello/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/netty-protal" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-protal/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-protal/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/netty-provider" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-provider/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/netty-provider/src/main/resources" charset="UTF-8" />
   </component>
 </project>
