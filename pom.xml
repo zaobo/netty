@@ -44,8 +44,8 @@
     </properties>
 
     <modules>
-		<module>netty-mybatis</module>
-		<module>netty-portal</module>
+		<module>netty-provider</module>
+		<module>netty-protal</module>
         <module>netty-hello</module>
     </modules>
 
