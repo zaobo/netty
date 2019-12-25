@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/header.css" />
+		<link rel="stylesheet" href="font_icon/iconfont.css" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+
+			mui.plusReady(function() {
+				plus.navigator.setStatusBarStyle("light");
+				plus.navigator.setStatusBarBackground("#c9394a")
+			});
+		</script>
+	</head>
+	<body>
+
+		<header class="mui-bar mui-bar-nav title">
+			<h1 class="mui-title title-color"><b>开信</b></h1>
+		</header>
+
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" tabindex="0">
+				<span class="mui-icon iconfont icon-fire"></span>
+				<span class="mui-tab-label">开信</span>
+			</a>
+			<a class="mui-tab-item" tabindex="1">
+				<span class="mui-icon iconfont icon-tongxunlu"></span>
+				<span class="mui-tab-label">联系人</span>
+			</a>
+			<a class="mui-tab-item" tabindex="2">
+				<span class="mui-icon iconfont icon-pengyouquan"></span>
+				<span class="mui-tab-label">动态</span>
+			</a>
+			<a class="mui-tab-item" tabindex="3">
+				<span class="mui-icon iconfont icon-wode"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+
+
+		<script type="text/javascript">
+			var array = [{
+					pageId: "chatlist.html",
+					pageUrl: "chatlist.html"
+				},
+				{
+					pageId: "contacts.html",
+					pageUrl: "contacts.html"
+				},
+				{
+					pageId: "discover.html",
+					pageUrl: "discover.html"
+				},
+				{
+					pageId: "me.html",
+					pageUrl: "me.html"
+				},
+			];
+
+			var style = {
+				top: "44px",
+				bottom: "50px"
+			}
+
+			mui.plusReady(function() {
+
+				// 禁止返回到登陆注册页面
+				mui.back = function() {
+					return false;
+				}
+
+				// 获取当前的webview对象
+				var indexWebview = plus.webview.currentWebview();
+
+				// 向单个的主页webview追加子叶的四张webview对象
+				for (var i = 0; i < array.length; i++) {
+					var page = plus.webview.create(array[i].pageUrl, array[i].pageId, style);
+					// 隐藏webview窗口
+					page.hide();
+					// 追加每一个子页面到主页面
+					indexWebview.append(page);
+				}
+
+				plus.webview.show(array[0].pageId);
+
+				// 批量绑定tap事件，展示不同的webview页面
+				mui(".mui-bar-tab").on("tap", "a", function() {
+					var tabindex = this.getAttribute("tabindex");
+					// 显示点击的tab选项所对应的页面
+					plus.webview.show(array[tabindex].pageId, "fade-in", 200);
+					for (var i = 0; i < array.length; i++) {
+						if (i != tabindex) {
+							// 隐藏其他的不需要的页面
+							plus.webview.hide(array[i].pageId, "fade-out", 200);
+						}
+					}
+				})
+
+			})
+		</script>
+
+	</body>
+</html>

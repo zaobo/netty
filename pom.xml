@@ -45,7 +45,7 @@
     </properties>
 
     <modules>
-		<module>netty-provider</module>
+		<module>netty-generator</module>
 		<module>netty-protal</module>
         <module>netty-hello</module>
     </modules>
@@ -138,7 +138,7 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus}</version>
             </dependency>
-            <!-- provider plus 代码生成器依赖 -->
+            <!-- generator plus 代码生成器依赖 -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId>
@@ -149,11 +149,6 @@
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis-spring}</version>
             </dependency>
-            <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker</artifactId>
-            </dependency>
-
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
@@ -204,11 +199,6 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson-databind}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.openfeign</groupId>
-                <artifactId>feign-core</artifactId>
-                <version>${feign-core}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
