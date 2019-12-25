@@ -21,6 +21,24 @@
 			<img id="img_myface" src="image/face-default-cat.png" />
 		</div>
 
+		<div id="sheet-myface" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell">
+				<a id="link_choosePhoto" href="#">选择照片</a>
+			  </li>
+			  <li class="mui-table-view-cell">
+				<a id="link_savePhoto" href="#">下载照片</a>
+			  </li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet-myface"><b>取消</b></a>
+				</li>
+			</ul>
+		</div>
+
 		<script src="js/mui.js"></script>
 		<script src="js/app.js"></script>
 		<script type="text/javascript">
@@ -49,6 +67,17 @@
 					mui("#sheet-myface").popover("toggle");
 				});
 				
+				// 绑定选择照片的菜单按钮
+				var link_choosePhoto = document.getElementById("link_choosePhoto");
+				link_choosePhoto.addEventListener("tap",function(){
+					mui.openWindow("plugin/v3.1.6/myface-uploader.html","myface-uploader.html");
+					mui("#sheet-myface").popover("toggle");
+				});
+				// 绑定保存照片的菜单按钮
+				var link_savePhoto = document.getElementById("link_savePhoto");
+				link_savePhoto.addEventListener("tap",function(){
+					
+				});
 			});
 		</script>
 	</body>

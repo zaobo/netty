@@ -1,5 +1,6 @@
 package com.zab.netty.protal.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class ChatMsg extends Model<ChatMsg> {
     /**
      * 主键
      */
+    @TableId
     private String id;
 
     /**

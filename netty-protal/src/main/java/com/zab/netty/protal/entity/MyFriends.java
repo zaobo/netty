@@ -1,5 +1,6 @@
 package com.zab.netty.protal.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class MyFriends extends Model<MyFriends> {
     /**
      * 主键
      */
+    @TableId
     private String id;
 
     /**
