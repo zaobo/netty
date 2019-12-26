@@ -29,8 +29,6 @@ public class ReturnData implements Serializable {
     // 响应中的数据
     private Object data;
 
-    private String ok;	// 不使用
-
     public static ReturnData build(Integer status, String msg, Object data) {
         return new ReturnData(status, msg, data);
     }

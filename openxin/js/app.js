@@ -7,7 +7,7 @@ window.app = {
 	/**
 	 * 图片服务器的url地址
 	 */
-	imageServerUrl: '',
+	imageServerUrl: 'http://192.168.178.112:88/imooc/',
 	/**
 	 * 判断字符串是否为空
 	 * @param {Object} str
@@ -42,12 +42,19 @@ window.app = {
 		plus.storage.setItem("userInfo", userInfoStr);
 	},
 
-/**
+	/**
 	 * 获取用户的全局对象
 	 */
 	getUserGlobalInfo: function() {
 		var userInfoStr = plus.storage.getItem("userInfo");
 		return JSON.parse(userInfoStr);
+	},
+	
+	/**
+	 * 登出后移除用户全局对象
+	 */
+	userLogout: function(){
+			plus.storage.removeItem("userInfo");
 	}
 
 }

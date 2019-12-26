@@ -10,4 +10,8 @@ public class ProtalApplicationTest {
     void contextLoads() {
     }
 
+    public static void main(String[] args) {
+        System.err.println("M00/00/00/wKiycF4Ep2iADzHEAAABoy_nrCU236.png".length());
+    }
+
 }

@@ -78,15 +78,14 @@
 		</div>
 
 		<script src="js/app.js"></script>
-		<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
 		<script type="application/javascript">
 			mui.plusReady(function() {
 				
 				// 判断用户是否注册或登陆过，如果本地内存有全局的用户对象，此时直接跳转到首页
 				var userInfo = app.getUserGlobalInfo();
-				// if(null != userInfo){
-				// 	mui.openWindow("index.html", "index.html");
-				// }
+				if(null != userInfo){
+					mui.openWindow("index.html", "index.html");
+				}
 				
 				var userform = document.getElementById("userform");
 				var username = document.getElementById("username");
@@ -116,10 +115,10 @@
 						mui.ajax(app.serverUrl + '/users/registOrLogin', {
 							data: {
 								username: username.value,
-								password: md5(txt_password.value),
+								password: btoa(txt_password.value),
 								cid: cid
 							},
-							dataType: 'json', //服务器返回json格式数据
+							// dataType: 'json', //服务器返回json格式数据
 							type: 'post', //HTTP请求类型
 							timeout: 10000, //超时时间设置为10秒；
 							headers: {
@@ -127,7 +126,7 @@
 							},
 							success: function(data) {
 								//服务器返回响应，根据响应结果，分析是否登录成功；
-								console.log(JSON.stringify(data));
+								// console.log(JSON.stringify(data));
 								
 								// 失去焦点
 								username.blur();
@@ -144,6 +143,7 @@
 									app.showToast(data.msg, "error");
 								}
 							}
+							
 						});
 
 					}

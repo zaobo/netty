@@ -42,6 +42,8 @@
         <session-redis>2.1.5.RELEASE</session-redis>
         <hystrix>1.2.7.RELEASE</hystrix>
         <netty>4.1.25.Final</netty>
+        <fastdfs>1.26.2</fastdfs>
+        <javase>3.3.3</javase>
     </properties>
 
     <modules>
@@ -217,6 +219,20 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty}</version>
+            </dependency>
+
+            <!--高性能分布式文件服务器-->
+            <dependency>
+                <groupId>com.github.tobato</groupId>
+                <artifactId>fastdfs-client</artifactId>
+                <version>${fastdfs}</version>
+            </dependency>
+
+            <!--二维码-->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>${javase}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -18,18 +18,18 @@
 		</header>
 
 		<div class="mui-content">
-			<img id="img_myface" src="image/face-default-cat.png" />
+			<img id="img_myface" src="plugin/cropper/images/picture.jpg" />
 		</div>
 
 		<div id="sheet-myface" class="mui-popover mui-popover-bottom mui-popover-action ">
 			<!-- 可选择菜单 -->
 			<ul class="mui-table-view">
-			  <li class="mui-table-view-cell">
-				<a id="link_choosePhoto" href="#">选择照片</a>
-			  </li>
-			  <li class="mui-table-view-cell">
-				<a id="link_savePhoto" href="#">下载照片</a>
-			  </li>
+				<li class="mui-table-view-cell">
+					<a id="link_choosePhoto" href="#">选择照片</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="link_savePhoto" href="#">下载照片</a>
+				</li>
 			</ul>
 			<!-- 取消菜单 -->
 			<ul class="mui-table-view">
@@ -45,40 +45,77 @@
 			mui.init()
 
 			mui.plusReady(function() {
-				
-				var user = app.getUserGlobalInfo();
-				var img_myface = document.getElementById("img_myface");
-				
-				if (user != null) {
-					var faceImage = user.faceImage;
-					if (app.isNotNull(faceImage)) {
-						img_myface.src = app.imageServerUrl + faceImage;
-					}
-				}
+
+				refreshFace();
+					
+				// 添加自定义事件，刷新头像
+				window.addEventListener("refresh",function(){
+					refreshFace();
+				})
 
 				// 获取手机端可见屏幕的宽度
 				var imgWidth = document.body.clientWidth;
 				img_myface.width = imgWidth;
 				img_myface.height = imgWidth;
-				
+
 				// 绑定选择菜单
 				var openMenu = document.getElementById("openMenu");
 				openMenu.addEventListener("tap", function() {
 					mui("#sheet-myface").popover("toggle");
 				});
-				
+
 				// 绑定选择照片的菜单按钮
 				var link_choosePhoto = document.getElementById("link_choosePhoto");
-				link_choosePhoto.addEventListener("tap",function(){
-					mui.openWindow("plugin/v3.1.6/myface-uploader.html","myface-uploader.html");
+				link_choosePhoto.addEventListener("tap", function() {
+					mui.openWindow({
+						url: "plugin/v3.1.6/myface-uploader.html",
+						id: "myface-uploader.html",
+						createNew: true
+					});
 					mui("#sheet-myface").popover("toggle");
 				});
 				// 绑定保存照片的菜单按钮
 				var link_savePhoto = document.getElementById("link_savePhoto");
-				link_savePhoto.addEventListener("tap",function(){
+				link_savePhoto.addEventListener("tap", function() {
+					plus.nativeUI.showWaiting("下载中...");
+					
+					var user = app.getUserGlobalInfo();
+					var faceImageBig = user.faceImageBig;
+					
+					var task = plus.downloader.createDownload(
+						app.imageServerUrl + faceImageBig,
+						{},
+						function (downloadFile, status) {
+							plus.nativeUI.closeWaiting();
+							if(status == 200){
+								var tempFile = downloadFile.filename;
+								
+								// 通过相册api保存照片到本地相册
+								plus.gallery.save(tempFile,function(){
+									app.showToast("保存照片成功!","success");
+								})
+							}else{
+								app.showToast("下载错误...","error");
+								console.log("下载错误...");
+							}
+						}
+					);
+					task.start();//启动下载任务
 					
 				});
 			});
+
+			function refreshFace() {
+				var user = app.getUserGlobalInfo();
+				var img_myface = document.getElementById("img_myface");
+
+				if (user != null) {
+					var faceImageBig = user.faceImageBig;
+					if (app.isNotNull(faceImageBig)) {
+						img_myface.src = app.imageServerUrl + faceImageBig;
+					}
+				}
+			}
 		</script>
 	</body>
 

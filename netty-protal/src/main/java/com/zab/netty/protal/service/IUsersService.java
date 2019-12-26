@@ -18,4 +18,5 @@ public interface IUsersService extends IService<Users> {
 
     ReturnData registOrLogin(Users users);
 
+    ReturnData update(Users user);
 }

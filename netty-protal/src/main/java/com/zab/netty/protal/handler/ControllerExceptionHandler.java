@@ -1,8 +1,10 @@
 package com.zab.netty.protal.handler;
 
 import com.zab.netty.protal.commons.ReturnData;
+import com.zab.netty.protal.exceptions.FastDFSException;
 import com.zab.netty.protal.exceptions.ProjectException;
 import com.zab.netty.protal.exceptions.WrongArgumentException;
+import com.zab.netty.protal.exceptions.WrongDataException;
 import com.zab.netty.protal.utils.JudgeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -27,8 +29,10 @@ public class ControllerExceptionHandler {
         String msg;
         if (ex instanceof WrongArgumentException || StringUtils.contains(ex.getMessage(), WrongArgumentException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof WrongArgumentException)) {
             msg = "请求参数有误," + ex.getMessage();
-        } else if (ex instanceof WrongArgumentException || StringUtils.contains(ex.getMessage(), WrongArgumentException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof WrongArgumentException)) {
+        } else if (ex instanceof WrongDataException || StringUtils.contains(ex.getMessage(), WrongDataException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof WrongDataException)) {
             msg = "数据库数据有误," + ex.getMessage();
+        } else if (ex instanceof FastDFSException || StringUtils.contains(ex.getMessage(), FastDFSException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof FastDFSException)) {
+            msg = "文件上传异常," + ex.getMessage();
         }  else if (ex instanceof ProjectException || StringUtils.contains(ex.getMessage(), ProjectException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof ProjectException)) {
             msg = "开发失误," + ex.getMessage();
         } else if (ex instanceof SQLException || StringUtils.contains(ex.getMessage(), SQLException.class.getName()) || (null != ex.getCause() && ex.getCause() instanceof SQLException)) {
