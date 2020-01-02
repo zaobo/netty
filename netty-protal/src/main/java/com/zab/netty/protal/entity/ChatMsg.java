@@ -2,19 +2,20 @@ package com.zab.netty.protal.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 聊天记录表
+ * 
  * </p>
  *
  * @author zab
- * @since 2019-12-25
+ * @since 2019-12-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -23,36 +24,27 @@ public class ChatMsg extends Model<ChatMsg> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId
     private String id;
 
-    /**
-     * 发送人编号
-     */
     private String sendUserId;
 
-    /**
-     * 接收人编号
-     */
     private String acceptUserId;
 
-    /**
-     * 消息内容
-     */
     private String msg;
 
     /**
-     * 签收状态
+     * 消息是否签收状态
+     *  1：签收
+     *  0：未签收
+
      */
     private Integer signFlag;
 
     /**
-     * 创建时间
+     * 发送请求的事件
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
 
     @Override

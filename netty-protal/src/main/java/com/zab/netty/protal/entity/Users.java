@@ -9,11 +9,11 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户表
+ * 
  * </p>
  *
  * @author zab
- * @since 2019-12-25
+ * @since 2019-12-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,30 +22,24 @@ public class Users extends Model<Users> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户编号
-     */
     @TableId
     private String id;
 
     /**
-     * 用户名
+     * 用户名，账号，开信号
      */
     private String username;
 
     /**
-     * 用户密码
+     * 密码
      */
     private String password;
 
     /**
-     * 用户头像
+     * 我的头像，如果没有默认给一张
      */
     private String faceImage;
 
-    /**
-     * 用户大头像
-     */
     private String faceImageBig;
 
     /**
@@ -54,13 +48,10 @@ public class Users extends Model<Users> {
     private String nickname;
 
     /**
-     * 二维码(主要用于添加好友)
+     * 新用户注册后默认后台生成二维码，并且上传到fastdfs
      */
     private String qrcode;
 
-    /**
-     * 每一台设备的编号
-     */
     private String cid;
 
 

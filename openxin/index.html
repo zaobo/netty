@@ -40,6 +40,10 @@
 				<span class="mui-icon iconfont icon-wode"></span>
 				<span class="mui-tab-label">我的</span>
 			</a>
+			<a class="mui-tab-item" tabindex="4">
+				<span class="mui-icon iconfont icon-wode"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
 		</nav>
 
 
@@ -59,6 +63,10 @@
 				{
 					pageId: "me.html",
 					pageUrl: "me.html"
+				},
+				{
+					pageId: "applyList.html",
+					pageUrl: "applyList.html"
 				},
 			];
 
@@ -100,8 +108,20 @@
 						}
 					}
 				})
+				
+				// 延时加载
+				setTimeout("initData()","1000");
 
-			})
+			});
+			
+			// 预加载
+			function initData(){
+				var applyList = plus.webview.getWebviewById("applyList.html");
+				
+				mui.fire(applyList,"refresh");
+				var me = plus.webview.getWebviewById("me.html");
+				mui.fire(me,"refresh");
+			}
 		</script>
 
 	</body>

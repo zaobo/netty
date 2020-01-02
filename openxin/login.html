@@ -58,12 +58,12 @@
 						</span>
 
 						<div class="wrap-input100 validate-input m-t-85 m-b-35">
-							<input class="input100" type="text" id="username" name="username" placeholder="用户名">
+							<input class="input100" type="text" id="username" name="username" value="" placeholder="用户名">
 							<span class="focus-input100"></span>
 						</div>
 
 						<div class="wrap-input100 validate-input m-b-50">
-							<input class="input100" type="password" id="txt_password" name="password" placeholder="密码">
+							<input class="input100" type="password" id="txt_password" name="password" value="" placeholder="密码">
 							<span class="focus-input100"></span>
 						</div>
 						<div class="container-login100-form-btn">
@@ -86,6 +86,7 @@
 				if(null != userInfo){
 					mui.openWindow("index.html", "index.html");
 				}
+				
 				
 				var userform = document.getElementById("userform");
 				var username = document.getElementById("username");
@@ -139,6 +140,9 @@
 	
 									// 页面跳转
 									mui.openWindow("index.html", "index.html");
+									// 触发另外一个webview的自定义事件，可以使用 mui.fire()
+									var imooc_meWebview = plus.webview.getWebviewById("me.html");
+									mui.fire(imooc_meWebview, "refresh");
 								} else {
 									app.showToast(data.msg, "error");
 								}

@@ -9,11 +9,11 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户和朋友的关联表
+ * 
  * </p>
  *
  * @author zab
- * @since 2019-12-25
+ * @since 2019-12-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,19 +22,16 @@ public class MyFriends extends Model<MyFriends> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId
     private String id;
 
     /**
-     * 自己的编号
+     * 用户id
      */
     private String myUserId;
 
     /**
-     * 朋友的编号
+     * 用户的好友id
      */
     private String myFriendUserId;
 

@@ -3,7 +3,7 @@ window.app = {
 	 * 后端服务发布的url地址
 	 */
 	// serverUrl: 'http://192.168.1.6:8888',
-	serverUrl: 'http://172.16.0.218:8888',
+	serverUrl: 'http://172.16.0.203:8888',
 	/**
 	 * 图片服务器的url地址
 	 */
@@ -49,12 +49,32 @@ window.app = {
 		var userInfoStr = plus.storage.getItem("userInfo");
 		return JSON.parse(userInfoStr);
 	},
-	
+
 	/**
 	 * 登出后移除用户全局对象
 	 */
-	userLogout: function(){
-			plus.storage.removeItem("userInfo");
+	userLogout: function() {
+		plus.storage.removeItem("userInfo");
+	},
+
+	/**
+	 * 保存用户的联系人列表
+	 * @param {Object} contactList
+	 */
+	setContactList: function(contactList) {
+		var contactListStr = JSON.stringify(contactList);
+		plus.storage.setItem("contactList", contactListStr);
+	},
+
+	/**
+	 * 获取本地缓存中的联系人列表
+	 */
+	getContactList: function(contactList) {
+		var contactList = plus.storage.getItem("contactList");
+		if (this.isNotNull(contactList)) {
+			return JSON.parse(contactList);
+		}
+		return [];
 	}
 
 }

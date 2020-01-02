@@ -3,9 +3,15 @@ package com.zab.netty.protal.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zab.netty.protal.commons.ReturnData;
+import com.zab.netty.protal.entity.FriendsRequest;
+import com.zab.netty.protal.entity.MyFriends;
 import com.zab.netty.protal.entity.Users;
+import com.zab.netty.protal.enums.SearchFriendsStatusEnum;
 import com.zab.netty.protal.exceptions.FastDFSException;
+import com.zab.netty.protal.exceptions.WrongArgumentException;
 import com.zab.netty.protal.idwork.Sid;
+import com.zab.netty.protal.mapper.FriendsRequestMapper;
+import com.zab.netty.protal.mapper.MyFriendsMapper;
 import com.zab.netty.protal.mapper.UsersMapper;
 import com.zab.netty.protal.service.IUsersService;
 import com.zab.netty.protal.utils.*;
@@ -22,7 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.util.Base64;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -44,6 +51,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private String qrcode;
     @Autowired
     private FastDFSClient fastDFSClient;
+    @Resource
+    private MyFriendsMapper myFriendsMapper;
+    @Resource
+    private FriendsRequestMapper friendsRequestMapper;
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -80,7 +91,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
                 org.apache.commons.io.FileUtils.forceDelete(new File(qrCodePath));
             } catch (Exception e) {
                 log.error("上传失败", e);
-                throw new FastDFSException("上传失败", e);
+                return ReturnData.errorMsg("上传失败");
             }
 
             users.setQrcode(qrCodeUrl);
@@ -103,6 +114,73 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(result, usersVO);
         return ReturnData.ok(usersVO);
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public ReturnData search(String myUserId, String friendUsername) {
+        Users friend = findFriend(friendUsername);
+        ReturnData returnData = check(myUserId, friend);
+        if (null != returnData) {
+            return returnData;
+        }
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(friend, usersVO);
+        return ReturnData.ok(usersVO);
+    }
+
+    @Override
+    @Transactional
+    public ReturnData addFriendRequest(String myUserId, String friendUsername) {
+        Users friend = findFriend(friendUsername);
+        ReturnData returnData = check(myUserId, friend);
+        if (null != returnData) {
+            return returnData;
+        }
+        // 1.查询发送好友请求记录表
+        QueryWrapper<FriendsRequest> friendsRequestQueryWrapper = new QueryWrapper<>();
+        friendsRequestQueryWrapper.eq("send_user_id", myUserId);
+        friendsRequestQueryWrapper.eq("accept_user_id", friend.getId());
+        FriendsRequest friendsRequest = friendsRequestMapper.selectOne(friendsRequestQueryWrapper);
+
+        if (null == friendsRequest) {
+            // 如果不是你的好友，并且好友记录没有添加，则新增好友请求记录
+            String requestId = sid.nextShort();
+            friendsRequest = new FriendsRequest();
+            friendsRequest.setId(requestId);
+            friendsRequest.setSendUserId(myUserId);
+            friendsRequest.setAcceptUserId(friend.getId());
+            friendsRequest.setRequestDateTime(new Date());
+            friendsRequestMapper.insert(friendsRequest);
+        }
+        return ReturnData.ok();
+    }
+
+    private ReturnData check(String myUserId, Users friend) {
+        if (null == friend) {
+            // 1.搜索的用户如果不存在，返回无此用户
+            return ReturnData.errorMsg(SearchFriendsStatusEnum.USER_NOT_EXIST.msg);
+        }
+        if (StringUtils.equalsIgnoreCase(myUserId, friend.getId())) {
+            // 2.搜索的账号是自己，返回不能添加自己
+            return ReturnData.errorMsg(SearchFriendsStatusEnum.NOT_YOURSELF.msg);
+        }
+
+        QueryWrapper<MyFriends> myFriendsWrapper = new QueryWrapper<>();
+        myFriendsWrapper.eq("my_user_id", myUserId);
+        myFriendsWrapper.eq("my_friend_user_id", friend.getId());
+        int count = myFriendsMapper.selectCount(myFriendsWrapper);
+        // 3.搜索的用户已经是你的好友了，返回已添加此好友
+        if (count > 0) {
+            return ReturnData.errorMsg(SearchFriendsStatusEnum.ALREADY_FRIENDS.msg);
+        }
+        return null;
+    }
+
+    private Users findFriend(String friendUsername) {
+        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", friendUsername);
+        return getOne(queryWrapper);
     }
 
 }

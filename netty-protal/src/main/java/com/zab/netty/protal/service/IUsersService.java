@@ -1,10 +1,8 @@
 package com.zab.netty.protal.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.Users;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.zab.netty.protal.utils.JudgeUtil;
 
 /**
  * <p>
@@ -19,4 +17,8 @@ public interface IUsersService extends IService<Users> {
     ReturnData registOrLogin(Users users);
 
     ReturnData update(Users user);
+
+    ReturnData search(String myUserId, String friendUsername);
+
+    ReturnData addFriendRequest(String myUserId, String friendUsername);
 }

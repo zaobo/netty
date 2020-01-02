@@ -9,5 +9,12 @@
         <result column="accept_user_id" property="acceptUserId" />
         <result column="request_date_time" property="requestDateTime" />
     </resultMap>
+    
+    <select id="queryFriendRequestList" resultType="FriendRequestVO" parameterType="String">
+        select u.id as sendUserId, u.username as sendUsername, u.face_image as sendFaceImage,
+        u.nickname as sendNickname from friends_request fr
+        left join users u on fr.send_user_id = u.id
+        where accept_user_id = #{acceptUserId}
+    </select>
 
 </mapper>

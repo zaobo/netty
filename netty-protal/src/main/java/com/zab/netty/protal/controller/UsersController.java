@@ -4,17 +4,17 @@ package com.zab.netty.protal.controller;
 import com.zab.netty.protal.bo.UsersBO;
 import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.Users;
+import com.zab.netty.protal.enums.SearchFriendsStatusEnum;
 import com.zab.netty.protal.service.IUsersService;
 import com.zab.netty.protal.utils.FastDFSClient;
 import com.zab.netty.protal.utils.FileUtils;
+import com.zab.netty.protal.utils.JudgeUtil;
+import com.zab.netty.protal.vo.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -79,13 +79,13 @@ public class UsersController {
     }
 
     @PostMapping("setNickname")
-    public ReturnData setNickname(@RequestBody UsersBO usersBO){
+    public ReturnData setNickname(@RequestBody UsersBO usersBO) {
         String nickname = usersBO.getNickname();
-        if(StringUtils.isBlank(nickname)){
+        if (StringUtils.isBlank(nickname)) {
             return ReturnData.errorMsg("昵称不能为空!");
         }
 
-        if(StringUtils.length(nickname)>8){
+        if (StringUtils.length(nickname) > 8) {
             return ReturnData.errorMsg("昵称的长度不能超过8个字符");
         }
 
@@ -93,6 +93,41 @@ public class UsersController {
         user.setId(usersBO.getUserId());
         user.setNickname(nickname);
         return usersService.update(user);
+    }
+
+    /**
+     * 搜索好友接口，根据账号做匹配查询，而不能是模糊查询
+     *
+     * @param myUserId
+     * @param friendUsername
+     * @return
+     */
+    @GetMapping("search")
+    public ReturnData searchUser(@RequestParam String myUserId, @RequestParam String friendUsername) {
+        if (StringUtils.isBlank(myUserId) || StringUtils.isBlank(friendUsername)) {
+            return ReturnData.errorMsg("查询失败");
+        }
+
+        return usersService.search(myUserId, friendUsername);
+
+    }
+
+    /**
+     * 添加好友
+     *
+     * @param myUserId
+     * @param friendUsername
+     * @return
+     */
+    @PostMapping("addFriendRequest")
+    public ReturnData addFriendRequest(@RequestParam String myUserId, @RequestParam String friendUsername) {
+        if (StringUtils.isBlank(myUserId) || StringUtils.isBlank(friendUsername)) {
+            return ReturnData.errorMsg("查询失败");
+        }
+
+        usersService.addFriendRequest(myUserId, friendUsername);
+        return ReturnData.ok();
+
     }
 
 }

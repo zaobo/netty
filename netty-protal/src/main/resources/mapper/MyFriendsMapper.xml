@@ -9,4 +9,9 @@
         <result column="my_friend_user_id" property="myFriendUserId" />
     </resultMap>
 
+    <select id="queryMyFriends" parameterType="String" resultType="MyFriendsVO">
+        select u.id as friendUserId, u.username as friendUsername, u.face_image as friendFaceImage, u.nickname as friendNickname
+        from my_friends m left join users u on u.id = my_friend_user_id where m.my_user_id = #{userId}
+    </select>
+
 </mapper>

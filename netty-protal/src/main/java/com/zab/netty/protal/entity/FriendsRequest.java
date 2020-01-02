@@ -2,18 +2,20 @@ package com.zab.netty.protal.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 用户请求表
+ * 
  * </p>
  *
  * @author zab
- * @since 2019-12-25
+ * @since 2019-12-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,26 +24,17 @@ public class FriendsRequest extends Model<FriendsRequest> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId
     private String id;
 
-    /**
-     * 发送用户编号
-     */
     private String sendUserId;
 
-    /**
-     * 接收用户编号
-     */
     private String acceptUserId;
 
     /**
-     * 请求日期
+     * 发送请求的事件
      */
-    private String requestDateTime;
+    private Date requestDateTime;
 
 
     @Override

@@ -1,7 +1,11 @@
 package com.zab.netty.protal.service;
 
+import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.MyFriends;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zab.netty.protal.vo.MyFriendsVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMyFriendsService extends IService<MyFriends> {
 
+    List<MyFriendsVO> queryMyFriends(String userId);
 }
