@@ -44,6 +44,8 @@
         <netty>4.1.25.Final</netty>
         <fastdfs>1.26.2</fastdfs>
         <javase>3.3.3</javase>
+        <jpush-client>3.2.17</jpush-client>
+        <jiguang-common>1.1.1</jiguang-common>
     </properties>
 
     <modules>
@@ -233,6 +235,17 @@
                 <groupId>com.google.zxing</groupId>
                 <artifactId>javase</artifactId>
                 <version>${javase}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.jpush.api</groupId>
+                <artifactId>jpush-client</artifactId>
+                <version>${jpush-client}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jpush.api</groupId>
+                <artifactId>jiguang-common</artifactId>
+                <version>${jiguang-common}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
