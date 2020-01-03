@@ -1,8 +1,10 @@
 package com.zab.netty.protal;
 
 import com.alibaba.fastjson.JSON;
+import com.zab.netty.protal.service.IChatMsgService;
 import com.zab.netty.protal.service.IFriendsRequestService;
 import com.zab.netty.protal.service.IMyFriendsService;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ public class ProtalApplicationTest {
 
     @Autowired
     private IMyFriendsService myFriendsService;
+    @Autowired
+    private IChatMsgService chatMsgService;
 
     @Test
     public void contextLoads() {
-        System.err.println(JSON.toJSONString(myFriendsService.queryMyFriends("191230AZ7A071BF8")));
+        chatMsgService.updateMsgSigned(Lists.list("1"));
     }
 
     public static void main(String[] args) {

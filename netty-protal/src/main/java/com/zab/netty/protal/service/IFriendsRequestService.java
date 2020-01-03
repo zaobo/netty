@@ -1,5 +1,6 @@
 package com.zab.netty.protal.service;
 
+import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.FriendsRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zab.netty.protal.vo.FriendRequestVO;
@@ -17,5 +18,5 @@ import java.util.List;
 public interface IFriendsRequestService extends IService<FriendsRequest> {
     List<FriendRequestVO> queryFriendRequestList(String acceptUserId);
 
-    void operFriendRequest(String acceptUserId, String sendUserId, Integer operType);
+    ReturnData operFriendRequest(String acceptUserId, String sendUserId, Integer operType);
 }

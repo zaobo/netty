@@ -1,4 +1,10 @@
 window.app = {
+
+	/**
+	 * netty服务后端发布的url
+	 */
+	// nettyServerUrl: 'ws://192.168.1.6:8088/ws',
+	nettyServerUrl: 'ws://172.16.0.203:8088/ws',
 	/**
 	 * 后端服务发布的url地址
 	 */
@@ -75,6 +81,40 @@ window.app = {
 			return JSON.parse(contactList);
 		}
 		return [];
-	}
+	},
 
+	/**
+	 * 和后端枚举对应
+	 */
+	CONNECT: 1, //"第一次(或重连)初始化连接"
+	CHAT: 2, //"聊天消息"
+	SIGNED: 3, //"消息签收"
+	KEEPALIVE: 4, //"客户端保持心跳"
+	
+	/**
+	 * 和后端的聊天模型保持一致
+	 * @param {Object} senderId
+	 * @param {Object} receiveId
+	 * @param {Object} msg
+	 * @param {Object} msgId
+	 */
+	ChatMsg : function(senderId, receiveId, msg, msgId){
+		this.senderId = senderId;
+		this.receiveId = receiveId;
+		this.msg = msg;
+		this.msgId = msgId;
+	},
+	
+	/**
+	 * 构建消息模型对象
+	 * @param {Object} action
+	 * @param {Object} nettyChatMsg
+	 * @param {Object} extand
+	 */
+	DataContent : function(action, nettyChatMsg, extand){
+		this.action = action;
+		this.nettyChatMsg = nettyChatMsg;
+		this.extand = extand;
+	}
+	
 }

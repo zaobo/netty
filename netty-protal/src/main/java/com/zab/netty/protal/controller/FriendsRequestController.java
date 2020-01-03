@@ -63,8 +63,7 @@ public class FriendsRequestController {
         if (null == OperatorFriendRequestTypeEnum.getMsgByType(operType)) {
             return ReturnData.errorMsg("没有对应的操作符");
         }
-        friendsRequestService.operFriendRequest(acceptUserId, sendUserId, operType);
-        return ReturnData.ok();
+        return friendsRequestService.operFriendRequest(acceptUserId, sendUserId, operType);
     }
 
 }

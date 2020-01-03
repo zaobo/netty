@@ -2,6 +2,7 @@ package com.zab.netty.protal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.FriendsRequest;
 import com.zab.netty.protal.entity.MyFriends;
 import com.zab.netty.protal.enums.OperatorFriendRequestTypeEnum;
@@ -44,7 +45,7 @@ public class FriendsRequestServiceImpl extends ServiceImpl<FriendsRequestMapper,
 
     @Transactional
     @Override
-    public void operFriendRequest(String acceptUserId, String sendUserId, Integer operType) {
+    public ReturnData operFriendRequest(String acceptUserId, String sendUserId, Integer operType) {
         // 判断如果是忽略好友请求，则直接删除好友请求的数据库表记录
         if (operType == OperatorFriendRequestTypeEnum.IGNORE.type) {
             deleteFriendRequest(acceptUserId, sendUserId);
@@ -56,6 +57,9 @@ public class FriendsRequestServiceImpl extends ServiceImpl<FriendsRequestMapper,
             // 3.删除好友请求表
             deleteFriendRequest(acceptUserId, sendUserId);
         }
+
+        // 4.查询好友列表
+        return ReturnData.ok(myFriendsMapper.queryMyFriends(acceptUserId));
     }
 
     private void deleteFriendRequest(String acceptUserId, String sendUserId) {

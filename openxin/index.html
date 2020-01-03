@@ -20,7 +20,7 @@
 	<body>
 
 		<header class="mui-bar mui-bar-nav title">
-			<h1 class="mui-title title-color"><b>开信</b></h1>
+			<h1 id="openxin_title" class="mui-title title-color"><b>开信</b></h1>
 		</header>
 
 		<nav class="mui-bar mui-bar-tab">
@@ -37,10 +37,6 @@
 				<span class="mui-tab-label">动态</span>
 			</a>
 			<a class="mui-tab-item" tabindex="3">
-				<span class="mui-icon iconfont icon-wode"></span>
-				<span class="mui-tab-label">我的</span>
-			</a>
-			<a class="mui-tab-item" tabindex="4">
 				<span class="mui-icon iconfont icon-wode"></span>
 				<span class="mui-tab-label">我的</span>
 			</a>
@@ -64,10 +60,6 @@
 					pageId: "me.html",
 					pageUrl: "me.html"
 				},
-				{
-					pageId: "applyList.html",
-					pageUrl: "applyList.html"
-				},
 			];
 
 			var style = {
@@ -81,6 +73,9 @@
 				mui.back = function() {
 					return false;
 				}
+
+				// 对网络链接进行事件监听
+				netChangeSwitch();
 
 				// 获取当前的webview对象
 				var indexWebview = plus.webview.currentWebview();
@@ -108,19 +103,36 @@
 						}
 					}
 				})
-				
+
 				// 延时加载
-				setTimeout("initData()","1000");
+				setTimeout("initData()", "1000");
 
 			});
-			
+
+			// 监听网络状态更改
+			function netChangeSwitch() {
+				document.addEventListener("netchange", function() {
+					// 网络状态获取和判断
+					var connectionStatus = plus.networkinfo.getCurrentType();
+					if (connectionStatus != 0 && connectionStatus != 1) {
+						// 重新打开网络连接
+						var openxin_title = document.getElementById("openxin_title");
+						openxin_title.innerHTML = "<b>开信</b>";
+					} else {
+						// 关闭网络链接
+						var openxin_title = document.getElementById("openxin_title");
+						openxin_title.innerHTML = "<b>开信(未连接)</b>";
+					}
+				})
+			}
+
 			// 预加载
-			function initData(){
-				var applyList = plus.webview.getWebviewById("applyList.html");
-				
-				mui.fire(applyList,"refresh");
+			function initData() {
+				var chatlist = plus.webview.getWebviewById("chatlist.html");
+
+				mui.fire(chatlist, "refresh");
 				var me = plus.webview.getWebviewById("me.html");
-				mui.fire(me,"refresh");
+				mui.fire(me, "refresh");
 			}
 		</script>
 

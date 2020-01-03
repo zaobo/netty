@@ -58,8 +58,7 @@
 				<div class="mui-indexed-list-alert"></div>
 				<div class="mui-indexed-list-inner">
 					<div class="mui-indexed-list-empty-alert">没有数据</div>
-					<ul class="mui-table-view">
-						<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
+					<ul id="contactList" class="mui-table-view">
 					</ul>
 				</div>
 			</div>
@@ -136,7 +135,7 @@
 					// 获得顺序之后，塞入朋友
 					contactArray[order].push(friend);
 				}
-
+				
 				// 3.构建通讯录html进行渲染
 				var contactHtml = '';
 				for (var i = 0; i < contactArray.length; i++) {
@@ -146,14 +145,36 @@
 						contactHtml += '<li data-group="' + nicknameStarter + '" class="mui-table-view-divider mui-indexed-list-group">' + nicknameStarter + '</li>'
 						for (var j = 0; j < friendArray.length; j++){
 							var friendArr = friendArray[j];
-							var imagePath = app.isNotNull(friendArr.friendFaceImage)?friendArr.friendFaceImage:"./plugin/cropper/images/picture.jpg";
-							contactHtml += '<li class="mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' + 
-												'<img class="mui-media-object mui-pull-left" style="max-width: 35px; height: 35px;" src="" />' +
+							var imagePath = app.isNotNull(friendArr.friendFaceImage) ? app.imageServerUrl + friendArr.friendFaceImage : "./plugin/cropper/images/picture.jpg";
+							contactHtml += '<li friendUserId=' + friendArr.friendUserId + ' friendNickname=' + friendArr.friendNickname  + ' friendFaceImage=' + imagePath + ' class="chat-with-friend mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' + 
+												'<img class="mui-media-object mui-pull-left" style="max-width: 35px; height: 35px;" src="' + imagePath + '" />' +
 												'<div class="mui-media-body" style="line-height: 35px;">' + friendArr.friendNickname + '</div>' +
 											'</li>'
 						}
 					}
 				}
+				// 渲染html
+				document.getElementById("contactList").innerHTML = contactHtml;
+				
+				// 清空数组
+				clearContactArray();
+				
+				// 为好友通讯录批量绑定点击事件
+				mui("#contactList").on("tap", ".chat-with-friend", function(e){
+					var friendUserId = this.getAttribute("friendUserId");
+					var friendNickname = this.getAttribute("friendNickname");
+					var friendFaceImage = this.getAttribute("friendFaceImage");
+					// 打开聊天子页面
+					mui.openWindow({
+						url: "chatting.html",
+						id: "chatting-" + friendUserId, //每个朋友的聊天页面都是位移对应的
+						extras: {
+							friendUserId: friendUserId,
+							friendNickname: friendNickname,
+							friendFaceImage: friendFaceImage
+						}
+					})
+				})
 			}
 
 			// 获取后端所有好友列表
