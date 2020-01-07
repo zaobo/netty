@@ -1,5 +1,6 @@
 package com.zab.netty.protal.service;
 
+import com.zab.netty.protal.commons.ReturnData;
 import com.zab.netty.protal.entity.ChatMsg;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zab.netty.protal.netty.NettyChatMsg;
@@ -19,4 +20,6 @@ public interface IChatMsgService extends IService<ChatMsg> {
     String addChatMsg(NettyChatMsg nettyChatMsg);
 
     void updateMsgSigned(List<String> msgIdList);
+
+    List<ChatMsg> getUnReadMgsList(String acceptUserId);
 }

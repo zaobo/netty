@@ -3,6 +3,8 @@ package com.zab.netty.protal.netty;
 import com.alibaba.fastjson.JSON;
 import com.zab.netty.protal.entity.ChatMsg;
 import com.zab.netty.protal.enums.MsgActionEnum;
+import com.zab.netty.protal.jpush.IJPushAttach;
+import com.zab.netty.protal.jpush.impl.JPushAttach;
 import com.zab.netty.protal.service.IChatMsgService;
 import com.zab.netty.protal.service.impl.ChatMsgServiceImpl;
 import com.zab.netty.protal.utils.JudgeUtil;
@@ -17,8 +19,10 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 处理消息的handler
@@ -60,19 +64,25 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
             String msgId = chatMsgService.addChatMsg(nettyChatMsg);
             nettyChatMsg.setMsgId(msgId);
 
+            DataContent dataContentMsg = new DataContent();
+            dataContentMsg.setNettyChatMsg(nettyChatMsg);
+
             // 发送消息
             // 从全局用户channel关系中获取接收方的channel
             Channel receiverChannel = UserChannelRel.get(nettyChatMsg.getReceiveId());
+
             if (receiverChannel == null) {
                 // TODO channel为空代表用户离线，推送消息(JPush，个推，小米推送)
+//                pushOffLineMSG(nettyChatMsg.getMsg(), nettyChatMsg.getMsg(), nettyChatMsg.getReceiveId(), new HashMap<>());
             } else {
                 // 当receiverChannel不为空时，从ChannelGroup去查找对应的channel是否存在
                 Channel findChannel = users.find(receiverChannel.id());
                 if (findChannel != null) {
                     // 用户在线
-                    receiverChannel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(nettyChatMsg)));
+                    receiverChannel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(dataContentMsg)));
                 } else {
                     // 用户离线 todo 推送离线消息
+//                    pushOffLineMSG(nettyChatMsg.getMsg(), nettyChatMsg.getMsg(), nettyChatMsg.getReceiveId(), new HashMap<>());
                 }
             }
 
@@ -128,4 +138,11 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         ctx.channel().close();
         users.remove(ctx.channel());
     }
+
+    private void pushOffLineMSG(String title, String msg, String acceptUserId, Map<String, String> extras) {
+        // 获取JPush的api实例
+        IJPushAttach jPushAttach = SpringUtil.getBean(JPushAttach.class);
+        jPushAttach.push(title, msg, 1, extras, acceptUserId);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.zab.netty.protal.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zab.netty.protal.entity.ChatMsg;
 import com.zab.netty.protal.enums.MsgSignFlagEnum;
 import com.zab.netty.protal.idwork.Sid;
@@ -8,6 +9,7 @@ import com.zab.netty.protal.netty.NettyChatMsg;
 import com.zab.netty.protal.service.IChatMsgService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -49,5 +51,14 @@ public class ChatMsgServiceImpl extends ServiceImpl<ChatMsgMapper, ChatMsg> impl
     @Transactional
     public void updateMsgSigned(List<String> msgIdList) {
         chatMsgMapper.batchUpdateMsgSigned(msgIdList);
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public List<ChatMsg> getUnReadMgsList(String acceptUserId) {
+        QueryWrapper<ChatMsg> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("accept_user_id", acceptUserId);
+        queryWrapper.eq("sign_flag", MsgSignFlagEnum.unsign.type);
+        return list(queryWrapper);
     }
 }
