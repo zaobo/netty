@@ -4,16 +4,16 @@ window.app = {
 	 * netty服务后端发布的url
 	 */
 	// nettyServerUrl: 'ws://192.168.1.6:8088/ws',
-	nettyServerUrl: 'ws://172.16.0.203:8088/ws',
+	nettyServerUrl: 'ws://47.105.179.120:8088/ws',
 	/**
 	 * 后端服务发布的url地址
 	 */
 	// serverUrl: 'http://192.168.1.6:8888',
-	serverUrl: 'http://172.16.0.203:8888',
+	serverUrl: 'http://47.105.179.120:8888',
 	/**
 	 * 图片服务器的url地址
 	 */
-	imageServerUrl: 'http://192.168.178.112:88/imooc/',
+	imageServerUrl: 'http://47.105.179.120:88/imooc/',
 	/**
 	 * 判断字符串是否为空
 	 * @param {Object} str

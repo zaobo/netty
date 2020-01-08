@@ -32,7 +32,7 @@ import java.util.Map;
 public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     // 用于记录和管理所有客户端的channel
-    private static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    public static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
@@ -49,13 +49,6 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
             //  2.1 当websocket第一次open的时候，初始化channel，把用户的channel和userid关联起来
             String senderId = dataContent.getNettyChatMsg().getSenderId();
             UserChannelRel.put(senderId, currentChannel);
-
-            // 测试
-            for (Channel c : users) {
-                System.err.println(c.id().asLongText());
-            }
-            UserChannelRel.output();
-
         } else if (JudgeUtil.isDBEq(action, MsgActionEnum.CHAT.type)) {
             //  2.2 聊天类型的消息，把聊天记录保存到数据库，同时标记消息的签收状态[未签收]
             NettyChatMsg nettyChatMsg = dataContent.getNettyChatMsg();
@@ -109,6 +102,7 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 
         } else if (JudgeUtil.isDBEq(action, MsgActionEnum.KEEPALIVE.type)) {
             //  2.4 心跳类型的消息
+            System.err.println("收到来自channel为[" + currentChannel + "]的心跳包");
         }
 
     }
@@ -127,6 +121,9 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+
+        String channelId = ctx.channel().id().asShortText();
+        System.err.println("客户端被移除，channelId为：" + channelId);
         // 当触发handlerRemoved，ChannelGroup会自动移除对应客户端的channel
         users.remove(ctx.channel());
     }

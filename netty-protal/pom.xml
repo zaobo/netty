@@ -178,7 +178,7 @@
                     <!-- 指定 Dockerfile 路径 -->
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <!-- 指定仓库地址 -->
-                    <dockerHost>http://192.168.178.111:2375</dockerHost>
+                    <dockerHost>http://47.105.179.120:2375</dockerHost>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

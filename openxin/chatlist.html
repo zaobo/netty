@@ -156,6 +156,9 @@
 					
 					// 每次链接之后，获取用户的未读未签收的消息列表
 					fetchUnReadMsg();
+					
+					// 定时发送心跳
+					setInterval("CHAT.keepalive()", 10000);
 				},
 				wsmessage: function(e) {
 					console.log("接收到消息：" + e.data)
@@ -168,7 +171,7 @@
 						return false;
 					}
 					
-					// 如果不是重新拉区好友列表，则获取聊天消息模型，渲染接收到的聊天记录
+					// 如果不是重新拉去好友列表，则获取聊天消息模型，渲染接收到的聊天记录
 					var chatMsg = dataContent.nettyChatMsg;
 					var msg = chatMsg.msg;
 					var friendUserId = chatMsg.senderId;
@@ -207,6 +210,15 @@
 					var dataContentSign = new app.DataContent(app.SIGNED, null, unSignedMsgIds);
 					// 发送批量签收的请求
 					CHAT.chat(JSON.stringify(dataContentSign));
+				},
+				keepalive: function() {
+					// 构建对象
+					var dataContent = new app.DataContent(app.KEEPALIVE, null, null);
+					// 发送心跳
+					CHAT.chat(JSON.stringify(dataContent));
+					// 定时执行函数
+					fetchUnReadMsg();
+					fetchContactList();
 				}
 			}
 			
